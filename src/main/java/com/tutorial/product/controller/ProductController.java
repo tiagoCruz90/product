@@ -29,6 +29,11 @@ public class ProductController {
     }
 
 
+    @PutMapping("/{Id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public void updateProduct(@PathVariable String Id, @RequestBody ProductRequestDTO productRequestDTO) {
+        productService.updateProduct(Id, productRequestDTO);
+    }
 
 }
 

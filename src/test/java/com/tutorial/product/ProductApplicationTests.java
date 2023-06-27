@@ -87,5 +87,27 @@ class ProductApplicationTests {
                 .andExpect(status().isOk());
         Assertions.assertEquals(1, productRepository.findAll().size());
         }
+
+
+    @Test
+    void updateProductIT(){
+        ProductRequestDTO productRequestDTO = getProductRequest();
+        productService.createProduct(productRequestDTO);
+
+        List<ProductResponseDTO> productResponseDTOList = productService.getAllProducts();
+        ProductResponseDTO productResponseDTO = productResponseDTOList.get(0);
+        String id = productResponseDTO.getId();
+
+        ProductRequestDTO productRequestDTO1 = ProductRequestDTO.builder()
+                .name("Iphone 13")
+                .description("Apple Iphone 13")
+                .price(BigDecimal.valueOf(1300))
+                .build();
+        productService.updateProduct(id, productRequestDTO1);
+        Assertions.assertEquals(1, productRepository.findAll().size());
+        Assertions.assertEquals("Iphone 13", productRepository.findAll().get(0).getName());
+        Assertions.assertEquals("Apple Iphone 13", productRepository.findAll().get(0).getDescription());
+        Assertions.assertEquals(BigDecimal.valueOf(1300), productRepository.findAll().get(0).getPrice());
+    }
     }
 

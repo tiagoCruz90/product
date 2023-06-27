@@ -8,6 +8,8 @@ import com.tutorial.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -40,4 +42,17 @@ public class ProductServiceImpl implements ProductService {
                 .price(product.getPrice())
                 .build()).toList();
     }
+
+    @Override
+    public void updateProduct(String Id, ProductRequestDTO productRequestDTO) {
+        Product product = productRepository.findById(Id).orElseThrow(() -> new RuntimeException("Product not found"));
+        product.setName(productRequestDTO.getName());
+        product.setDescription(productRequestDTO.getDescription());
+        product.setPrice(productRequestDTO.getPrice());
+
+        productRepository.save(product);
+        log.info("Product {} updated successfully", product.getId());
+    }
+
+
 }
